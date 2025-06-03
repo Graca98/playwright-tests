@@ -1,35 +1,35 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from "@playwright/test";
 
 test.beforeEach(async ({ page }) => {
-    await page.goto('https://the-internet.herokuapp.com/entry_ad');
+  await page.goto("https://the-internet.herokuapp.com/entry_ad");
 });
 
-test.describe('Entry Ad', () => {
-    test('Modal is open on page load', async ({ page }) => {
-        await page.addInitScript(() => {
-            window.localStorage.clear(); // Zajistí, že modal se znovu objeví
-        });
-    
-        const modal = page.getByRole('heading', { name: 'THIS IS A MODAL WINDOW' });
-        await expect(modal).toBeVisible({ timeout: 10000 });
-    })
+test.describe("Entry Ad", () => {
+  test("should display modal window on page load", async ({ page }) => {
+    await page.addInitScript(() => {
+      // Zajistí, že modal se znovu objeví
+      window.localStorage.clear();
+    });
 
-    test('Modal shows and hides correctly', async ({ page }) => {
-        await page.addInitScript(() => {
-            window.localStorage.clear(); 
-        });
-    
-        const modal = page.getByRole('heading', { name: 'THIS IS A MODAL WINDOW' });
-        await expect(modal).toBeVisible({ timeout: 10000 });
+    const modal = page.getByRole("heading", { name: "THIS IS A MODAL WINDOW" });
+    await expect(modal).toBeVisible({ timeout: 10000 });
+  });
 
-        await page.locator('.modal-footer >> text=Close').click();
+  test("should display modal on load and hide it after closing", async ({
+    page,
+  }) => {
+    await page.addInitScript(() => {
+      window.localStorage.clear();
+    });
 
-        // Ověříme, že modal po kliknutí zmizel
-        await expect(modal).toBeHidden();
+    const modal = page.getByRole("heading", { name: "THIS IS A MODAL WINDOW" });
+    await expect(modal).toBeVisible({ timeout: 10000 });
 
-        // Reload a kontrola, že se znovu neobjeví
-        await page.reload();
-        await expect(modal).toBeHidden();
-    })
-    
-})
+    await page.locator(".modal-footer >> text=Close").click();
+
+    await expect(modal).toBeHidden();
+
+    await page.reload();
+    await expect(modal).toBeHidden();
+  });
+});
