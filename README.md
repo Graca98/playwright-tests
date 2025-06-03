@@ -30,5 +30,6 @@ Testují chování webových prvků na stránkách z [The Internet Herokuapp](ht
    npm install
 
 2. Spusť všechny testy:
+  ```bash
    npx playwright test
 
